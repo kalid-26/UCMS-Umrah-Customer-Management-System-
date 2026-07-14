@@ -1,10 +1,12 @@
 :root{
     --primary: red;
+    --txt-color: rgb(232, 232, 232);
 }
 
 
 body{
-    background-color: rgb(240, 240, 240);
+    background-color: rgb(39, 39, 39);
+    color: var(--txt-color);
 }
 
 .login-container{
@@ -18,13 +20,23 @@ body{
     width: 400px;
     padding: 2rem;
     border: none;
-    background-color: rgb(248, 248, 248);
+    background-color: rgb(66, 66, 66);
     border-radius: 20px;
+    color: rgb(175, 175, 175);
+}
+
+.form-control,
+.form-check-input{
+    background-color: transparent;
+    border: 1px solid rgb(104, 104, 104);
+    transition: all 300ms ease-in-out;
 }
 
 .form-control:focus,
 .form-check-input:focus{
     box-shadow: none;
+    background-color: transparent;
+    border: 1px solid rgb(101, 101, 101);
 }
 
 .form-control::placeholder{
@@ -35,13 +47,13 @@ body{
     color: rgb(134, 187, 0);
 }
 .btn-primary{
-    background-color: rgb(181, 252, 3);
+    background-color: rgb(112, 142, 37);
     border: 0;
     transition: all 300ms ease-in-out;
     font-weight: bold;
 }
 .btn-primary:hover{
-    background-color: rgb(195, 255, 0);
+    background-color: rgb(98, 128, 0);
     transform: translateY(-2px);
     box-shadow: 0px 2px 20px rgba(166, 255, 0, 0.33);
 }
