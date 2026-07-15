@@ -3,3 +3,4 @@ __pycache__/
 .env
 d.html
 db.sqlite3
+cr.txt
