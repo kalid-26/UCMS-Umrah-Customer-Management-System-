@@ -24,10 +24,13 @@
             </ul>
         </div>
     </nav>
-    <div class="d-flex align-items-center justify-content-between">
+    <div class="">
         <h1>Dashboard</h1>
-        
+        {% if user.requestauthenticate %}
+        <p>{{user.request.first_name}}</p>
+        {% endif %}
     </div>
+
 
     <div class="py-4">
         <h6><strong>Total Customers: </strong>0</h6>
