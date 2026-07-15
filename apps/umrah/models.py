@@ -1,5 +1,7 @@
 from django.db import models
 from django.conf import settings
+from .chioces import ApplicationStatus, PaymentMethod
+
 
 from datetime import datetime
 # Create your models here.
@@ -61,5 +63,29 @@ class Package(models.Model):
         return f"{self.name} {self.price}"
     
 class UmrahApplication(models.Model):
-    pass
+    customer = models.ForeignKey(Customer, on_delete=models.PROTECT, related_name="applications")
+    package = models.ForeignKey(Package, on_delete=models.PROTECT)
+    status = models.CharField(max_length=200, choices=ApplicationStatus.choices, default=ApplicationStatus.PENDING)
+    registration_date = models.DateField(auto_now_add=True)
     
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
+    
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return f"{self.customer.customer_id}-{self.package.name}"
+    
+class Payment(models.Model):
+    application = models.ForeignKey(UmrahApplication, on_delete=models.PROTECT)
+    amount = models.DecimalField(max_digits=12, decimal_places=2)
+    payment_method = models.CharField(max_length=20, choices=PaymentMethod.choices)
+    payment_date = models.DateField()
+    reference_number = models.CharField(max_length=100, blank=True)
+    
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
+    
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return f"{self.application.customer.customer_id}-{self.amount}"
