@@ -10,7 +10,7 @@ from .forms import LoginForm
 
 # Create your views here.
 class LoginView(FormView):
-    template_name = 'login.html'
+    template_name = 'accounts/login.html'
     form_class = LoginForm
     success_url = reverse_lazy('accounts:dashboard')
     

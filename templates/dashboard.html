@@ -2,10 +2,38 @@
 {% block title %}UCMS - Dashboard{% endblock %}
 
 {% block content %}
-<div class="container py-5">
+<div class="py-2">
+    <nav class="navbar navbar-expand-lg text-light p-2">
+
+        <a href="#" class="navbar-brand text-light">UCMS</a>
+        <button class="navbar-toggler text-light" data-bs-toggle="collapse" data-bs-target="#menuIcon">
+            <span class="navbar-toggler-icon "></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="menuIcon">
+            <ul class="navbar-nav ms-auto ">
+                <li class="nav-item">
+                    <a href="#" class="nav-link text-light">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link text-light">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="btn btn-danger btn-sm align-items-center" href="{% url 'accounts:logout' %}">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
     <div class="d-flex align-items-center justify-content-between">
         <h1>Dashboard</h1>
-        <a class="btn btn-danger btn-sm" href="{% url 'accounts:logout' %}">Logout</a>
+        
+    </div>
+
+    <div class="py-4">
+        <h6><strong>Total Customers: </strong>0</h6>
+        <h6><strong>Pending Customers: </strong>0</h6>
+        <h6><strong>Completed Customers: </strong>0</h6>
+        <h6><strong>Pending Payments:</strong>0</h6>
     </div>
 </div>
 {% endblock %}
