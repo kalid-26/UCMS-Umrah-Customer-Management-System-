@@ -80,7 +80,7 @@ body{
 
 .sidebar a:hover{
     color: var(--primary);
-    letter-spacing: 2px;
+    letter-spacing: 1px;
 }
 
 

@@ -17,6 +17,8 @@ class Customer(models.Model):
     passport_number = models.CharField(max_length=50, unique=True)
     passport_expiry_date = models.DateField()
     
+    is_active = models.BooleanField(default=True)
+    
     created_at = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
     
