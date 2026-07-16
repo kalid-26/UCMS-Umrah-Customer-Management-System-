@@ -1,0 +1,40 @@
+{% extends "layouts/base_dashboard.html" %}
+{% block base_dashboard %}
+
+<div class="d-flex align-items-center justify-content-between">
+    <h5>Customers</h5>
+    <div class="">
+        
+        <a href="" class="btn btn-primary"><i class="bi bi-plus"></i> Add Customer</a>
+    </div>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Customer Id</th>
+            <th>Name</th>
+            <th>Phone</th>
+            <th>Passport</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <tr>
+            {% for customer in customers %}
+            <td>{{customer.customer_id}}</td>
+            <td>{{customer.first_name}} {{customer.last_name}}</td>
+            <td>{{customer.phone_number}}</td>
+            <td>{{customer.passport_number}}</td>
+        </tr>
+        
+        {% empty %}
+        <tr>
+            <td colspan="4">No Customers Found.</td>
+        </tr>
+
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

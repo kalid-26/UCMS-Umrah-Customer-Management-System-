@@ -1,0 +1,39 @@
+{% extends "layouts/base_dashboard.html" %}
+{% block base_dashboard %}
+
+<div class="d-flex align-items-center justify-content-between">
+    <h5>Package</h5>
+    <div class="mb-3">
+        <a href="" class="btn btn-primary"><i class="bi bi-plus"></i> Add Package</a>
+    </div>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Duration Days</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <tr>
+            {% for package in packages %}
+            <td>{{package.name}}</td>
+            <td>{{package.price}}</td>
+            <td>{{package.duration_days}}</td>
+            <td>{{package.is_active}}</td>
+        </tr>
+        
+        {% empty %}
+        <tr>
+            <td colspan="4">No Packages Found.</td>
+        </tr>
+
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

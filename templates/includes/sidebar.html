@@ -1,10 +1,10 @@
 <aside class="sidebar">
     <div class="side-bar-links">
-        <a href="#" class="nav-link">
+        <a href="{% url "umrah:customer-dashboard" %}" class="nav-link">
             <i class="bi bi-columns"></i>
             <span> Dashboard</span>
         </a>
-        <a href="#" class="nav-link">
+        <a href="{% url "umrah:customer-list" %}" class="nav-link">
             <i class="bi bi-person"></i>
             <span>List customer</span>
         </a>
@@ -12,7 +12,7 @@
             <i class="bi bi-person"></i>
             <span>Add Customer </span>
         </a>
-        <a href="#" class="nav-link">
+        <a href="{% url "umrah:package-list" %}" class="nav-link">
             <i class="bi bi-person"></i>
             <span>List Package</span>
         </a>
@@ -20,7 +20,7 @@
             <i class="bi bi-person"></i>
             <span>Add Package</span>
         </a>
-        <a href="#" class="nav-link">
+        <a href="{% url "umrah:payment-list" %}" class="nav-link">
             <i class="bi bi-person"></i>
             <span>List Payments</span>
         </a>
