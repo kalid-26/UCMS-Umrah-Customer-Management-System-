@@ -13,7 +13,11 @@ class CustomerList(LoginRequiredMixin, ListView):
     template_name = "umrah/customer_list.html"
     context_object_name = "customers"
     paginate_by = 10
-    
+
+class CustomerDetail(LoginRequiredMixin, DetailView):
+    model = Customer
+    template_name = 'umrah/customer_detail.html'
+    context_object_name = 'customer'
     
 class PackageList(LoginRequiredMixin, ListView):
     model = Package

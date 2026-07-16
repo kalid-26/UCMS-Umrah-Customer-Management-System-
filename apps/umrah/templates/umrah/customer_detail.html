@@ -1,0 +1,49 @@
+{% extends "layouts/base_dashboard.html" %}
+{% block base_dashboard %}
+
+<div class="detail-card">
+    <div class="card-body">
+        <h3 class="card-title mb-5">Customer Detail</h3>
+        
+        <div>
+            <strong>ID:</strong>
+            <p>{{customer.id}}</p>
+        </div>
+
+        <div>
+            <strong>Full Name:</strong>
+            <p>{{customer.first_name}} {{customer.last_name}}</p>
+        </div>
+
+        <div>
+            <strong>Phone:</strong>
+            <p>{{customer.phone_number}}</p>
+        </div>
+
+        <div>
+            <strong>Email:</strong>
+            <p>{{customer.email}}</p>
+        </div>
+
+        <div>
+            <strong>Passport Number:</strong>
+            <p>{{customer.passport_number}}</p>
+        </div>
+
+        <div>
+            <strong>Passport Expiry Date:</strong>
+            <p>{{customer.passport_expiry_date}}</p>
+        </div>
+
+        <div>
+            <strong>Creatd By:</strong>
+            <p>{{customer.created_by}}</p>
+        </div>
+
+        
+    </div>
+</div>
+
+
+
+{% endblock %}
