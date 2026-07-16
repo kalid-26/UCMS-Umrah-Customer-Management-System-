@@ -70,6 +70,8 @@ class UmrahApplication(models.Model):
     status = models.CharField(max_length=200, choices=ApplicationStatus.choices, default=ApplicationStatus.PENDING)
     registration_date = models.DateField(auto_now_add=True)
     
+    is_active = models.BooleanField(default=True)
+    
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
     
     created_at = models.DateTimeField(auto_now_add=True)
