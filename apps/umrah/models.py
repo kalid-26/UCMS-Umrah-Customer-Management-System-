@@ -87,6 +87,8 @@ class Payment(models.Model):
     payment_date = models.DateField()
     reference_number = models.CharField(max_length=100, blank=True)
     
+    is_active = models.BooleanField(default=True)
+    
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
     
     created_at = models.DateTimeField(auto_now_add=True)

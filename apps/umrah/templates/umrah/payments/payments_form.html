@@ -1,0 +1,11 @@
+{% extends "layouts/base_dashboard.html" %}
+{% block base_dashboard %}
+
+<h4 class="mb-5">Add Application</h4>
+<form method="post">
+    {% csrf_token %}
+    {{form.as_p}}
+    <button type="submit" class="btn btn-sm btn-primary">Add Application</button>
+</form>
+
+{% endblock %}

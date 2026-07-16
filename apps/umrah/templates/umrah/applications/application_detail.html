@@ -1,0 +1,44 @@
+{% extends "layouts/base_dashboard.html" %}
+{% block base_dashboard %}
+
+<div class="detail-card">
+    <div class="card-body">
+        <h3 class="card-title mb-5">Application Detail</h3>
+        
+        <div>
+            <strong>Customer ID:</strong>
+            <p>{{application.customer.customer_id}}</p>
+        </div>
+
+        <div>
+            <strong>Full Name:</strong>
+            <p>{{application.customer.first_name}} {{application.customer.last_name}}</p>
+        </div>
+
+        <div>
+            <strong>Package:</strong>
+            <p>{{application.package.name}}</p>
+        </div>
+
+        <div>
+            <strong>Registration Date:</strong>
+            <p>{{application.registration_date}}</p>
+        </div>
+
+        <div>
+            <strong>Status:</strong>
+            <p>{{application.status}}</p>
+        </div>
+
+        <div>
+            <strong>Creatd By:</strong>
+            <p>{{application.created_by}}</p>
+        </div>
+
+        
+    </div>
+</div>
+
+
+
+{% endblock %}
