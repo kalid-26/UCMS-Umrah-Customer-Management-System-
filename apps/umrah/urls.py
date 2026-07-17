@@ -14,8 +14,17 @@ from .views import (
     ApplicationUpdate,
     ApplicationArchive,
     
+    PaymentList,
+    PaymentDetail,
+    PaymentCreate,
+    PaymentUpdate,
+    PaymentArchive,
+    
     PackageList, 
-    PaymentList)
+    PackageDetail,
+    PackageCreate,
+    PackageUpdate,
+    PackageArchive)
 
 app_name = 'umrah'
 
@@ -39,8 +48,15 @@ urlpatterns = [
     
     # package urls 
     path('packages/', PackageList.as_view(), name='package-list'),  
-    
+    path('packages/detail/<int:pk>', PackageDetail.as_view(), name='package-detail'),  
+    path('packages/create/', PackageCreate.as_view(), name='package-add'),  
+    path('packages/edit/<int:pk>', PackageUpdate.as_view(), name='package-edit'),  
+    path('packages/archive/<int:pk>', PackageArchive.as_view(), name='package-archive'),  
     
     # payment urls 
-    path('payments/', PaymentList.as_view(), name='payment-list'),  
+    path('payments/', PaymentList.as_view(), name='payment-list'), 
+    path('payments/detail/<int:pk>', PaymentDetail.as_view(), name='payment-detail'),  
+    path('payments/create/', PaymentCreate.as_view(), name='payment-add'),  
+    path('payments/edit/<int:pk>', PaymentUpdate.as_view(), name='payment-edit'),  
+    path('payments/archive/<int:pk>', PaymentArchive.as_view(), name='payment-archive'),  
 ]

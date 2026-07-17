@@ -3,36 +3,36 @@
 
 <div class="detail-card">
     <div class="card-body">
-        <h3 class="card-title mb-5">Application Detail</h3>
+        <h3 class="card-title mb-5">Payment Detail</h3>
         
         <div>
-            <strong>Customer ID:</strong>
-            <p>{{application.customer.customer_id}}</p>
+            <strong>Customer:</strong>
+            <p>{{payment.application.customer.first_name}} {{payment.application.customer.last_name}}</p>
         </div>
 
         <div>
-            <strong>Full Name:</strong>
-            <p>{{application.customer.first_name}} {{application.customer.last_name}}</p>
+            <strong>Amount:</strong>
+            <p>{{payment.amount}}</p>
         </div>
 
         <div>
-            <strong>Package:</strong>
-            <p>{{application.package.name}}</p>
+            <strong>Payment Method:</strong>
+            <p>{{payment.payment_method}}</p>
         </div>
 
         <div>
-            <strong>Registration Date:</strong>
-            <p>{{application.registration_date}}</p>
+            <strong>Payment Date:</strong>
+            <p>{{payment.payment_date}}</p>
         </div>
 
         <div>
-            <strong>Status:</strong>
-            <p>{{application.status}}</p>
+            <strong>Created By:</strong>
+            <p>{{payment.created_by}}</p>
         </div>
 
         <div>
-            <strong>Creatd By:</strong>
-            <p>{{application.created_by}}</p>
+            <strong>Created At:</strong>
+            <p>{{payment.created_at}}</p>
         </div>
 
         

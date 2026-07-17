@@ -4,7 +4,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 
 from .models import Customer, Package, Payment, UmrahApplication
-from .forms import CustomerForm, ApplicationForm
+from .forms import CustomerForm, ApplicationForm, PaymentForm, PackageForm
 
 # Create your views here.
 def CustomerDashboard(request):
@@ -36,7 +36,7 @@ class CustomerDetail(LoginRequiredMixin, DetailView):
 
 class CustomerCreateView(LoginRequiredMixin, CreateView):
     model = Customer
-    form_class = CustomerForm, ApplicationForm
+    form_class = CustomerForm
     template_name = "umrah/customers/customer_form.html"
     
     def form_valid(self, form):
@@ -54,7 +54,7 @@ class CustomerCreateView(LoginRequiredMixin, CreateView):
     
 class CustomerUpdateView(LoginRequiredMixin, UpdateView):
     model= Customer
-    form_class = CustomerForm, ApplicationForm
+    form_class = CustomerForm
     template_name = "umrah/customers/customer_form.html"
     
     def get_success_url(self):
@@ -149,8 +149,58 @@ class ApplicationArchive(LoginRequiredMixin, DeleteView):
 # ------------------------------------
 class PackageList(LoginRequiredMixin, ListView):
     model = Package
-    template_name = 'umrah/package_list.html'
+    template_name = 'umrah/packages/package_list.html'
     context_object_name = "packages"
+
+    def get_queryset(self):
+        return Package.objects.filter(
+            is_active=True
+        )
+class PackageDetail(LoginRequiredMixin, DetailView):
+    model = Package
+    template_name = 'umrah/packages/package_detail.html'
+    context_object_name = "package"
+
+class PackageCreate(LoginRequiredMixin, CreateView):
+    model = Package
+    form_class = PackageForm
+    template_name = 'umrah/packages/package_form.html'
+    
+    def form_valid(self, form):
+        form.instance.created_by = (
+            self.request.user
+        )
+        return super().form_valid(form)
+    def get_success_url(self):
+        return reverse_lazy(
+            "umrah:package-detail",
+            kwargs = {
+                "pk": self.object.pk
+            }
+        )
+class PackageUpdate(LoginRequiredMixin, UpdateView):
+    model = Package
+    form_class = PackageForm
+    template_name = 'umrah/packages/package_form.html'
+    
+    def get_success_url(self):
+        return reverse_lazy(
+            "umrah:package-detail",
+            kwargs = {
+                "pk": self.object.pk
+            }
+        )
+        
+
+class PackageArchive(LoginRequiredMixin, DeleteView):
+    def post(self, request, pk):
+        package = get_object_or_404(
+            Package,
+            pk=pk
+        )
+        package.is_acitve = False
+        package.save()
+        return redirect("umrah:package-list")
 
 
 # ------------------------------------
@@ -162,3 +212,55 @@ class PaymentList(LoginRequiredMixin, ListView):
     model = Payment
     template_name = 'umrah/payments/payments_list.html'
     context_object_name = "payments"
+    paginate_by = 10
+    
+    def get_queryset(self):
+        return Payment.objects.filter(
+            is_active=True
+        )
+    
+class PaymentDetail(LoginRequiredMixin, DetailView):
+    model = Payment
+    template_name = 'umrah/payments/payments_detail.html'
+    context_object_name = "payment"
+    
+class PaymentCreate(LoginRequiredMixin, CreateView):
+    model = Payment
+    form_class = PaymentForm
+    template_name = 'umrah/payments/payments_form.html'
+    
+    def form_valid(self, form):
+        form.instance.created_by = (
+            self.request.user
+        ) 
+        return super().form_valid(form)
+    
+    def get_success_url(self):
+        return reverse_lazy(
+            "umrah:payment-detail",
+            kwargs = {
+                "pk": self.object.pk
+            }
+        )
+    
+class PaymentUpdate(LoginRequiredMixin, UpdateView):
+    model = Payment
+    form_class = PaymentForm
+    template_name =  'umrah/payments/payments_form.html'
+    
+    def get_success_url(self):
+        return reverse_lazy(
+            "umrah:payment-detail",
+            kwargs = {
+                "pk": self.object.pk
+            }
+        )
+class PaymentArchive(LoginRequiredMixin, DeleteView):
+    def post(self, request, pk):
+        payment = get_object_or_404(
+            Payment,
+            pk=pk
+        )
+        payment.is_active = False
+        payment.save()
+        return redirect("umrah:payment-list")

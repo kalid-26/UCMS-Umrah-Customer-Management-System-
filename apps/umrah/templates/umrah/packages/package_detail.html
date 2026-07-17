@@ -1,0 +1,39 @@
+{% extends "layouts/base_dashboard.html" %}
+{% block base_dashboard %}
+
+<div class="detail-card">
+    <div class="card-body">
+        <h3 class="card-title mb-5">Package Detail</h3>
+        
+        <div>
+            <strong>Name:</strong>
+            <p>{{package.name}}</p>
+        </div>
+
+        <div>
+            <strong>Price:</strong>
+            <p>{{package.price}}</p>
+        </div>
+
+        <div>
+            <strong>Duration Days:</strong>
+            <p>{{package.duration_days}}</p>
+        </div>
+
+        <div>
+            <strong>Description:</strong>
+            <p>{{package.description}}</p>
+        </div>
+
+        <div>
+            <strong>Creatd By:</strong>
+            <p>{{package.created_by}}</p>
+        </div>
+
+        
+    </div>
+</div>
+
+
+
+{% endblock %}

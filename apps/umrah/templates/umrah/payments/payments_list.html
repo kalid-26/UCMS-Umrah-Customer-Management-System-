@@ -2,42 +2,40 @@
 {% block base_dashboard %}
 
 <div class="d-flex align-items-center justify-content-between">
-    <h3>Applications</h3>
+    <h3>Payments</h3>
     <div class="mb-3">
-        <a href="{% url "umrah:application-add" %}" class="btn btn-primary"><i class="bi bi-plus"></i> Add Application</a>
+        <a href="{% url "umrah:payment-add" %}" class="btn btn-primary"><i class="bi bi-plus"></i> Add Payment</a>
     </div>
 </div>
 
 <table class="table table-striped table-hover table-dark table-bordered">
     <thead>
         <tr>
-            <th>Customer ID</th>
-            <th>Full Name</th>
-            <th>Package</th>
-            <th>Registration Date</th>
-            <th>Status</th>
+            <th>Customer</th>
+            <th>Amount</th>
+            <th>Payment Method</th>
+            <th>Payment Date</th>
             <th>Action</th>
         </tr>
     </thead>
 
     <tbody class="">
         <tr>
-            {% for application in applications %}
-            <td>{{application.customer.customer_id}}</td>
-            <td>{{application.customer.first_name}} {{application.customer.last_name}}</td>
-            <td>{{application.package.name}}</td>
-            <td>{{application.registration_date}}</td>
-            <td>{{application.status}}</td>
+            {% for payment in payments %}
+            <td>{{payment.application.customer.first_name}} {{payment.application.customer.last_name}}</td>
+            <td>{{payment.amount}}</td>
+            <td>{{payment.payment_method}}</td>
+            <td>{{payment.payment_date}}</td>
             <td>
-                <a href="{% url "umrah:application-detail" application.pk %}" class="btn btn-sm btn-info">
+                <a href="{% url "umrah:payment-detail" payment.pk %}" class="btn btn-sm btn-info">
                     <i class="bi bi-eye"></i>
                     View
                 </a>
-                <a href="{% url "umrah:application-edit" application.pk %}" class="btn btn-sm btn-info">
+                <a href="{% url "umrah:payment-edit" payment.pk %}" class="btn btn-sm btn-info">
                     <i class="bi bi-pen"></i>
                     Edit
                 </a>
-                <form method="post" action="{% url "umrah:application-archive" application.pk %}" style="display: inline;">
+                <form method="post" action="{% url "umrah:payment-archive" payment.pk %}" style="display: inline;">
                     {% csrf_token %}
                     <button type="submit" class="btn btn-sm btn-danger">
                         <i class="bi bi-archive"></i>
@@ -49,7 +47,7 @@
         
         {% empty %}
         <tr>
-            <td colspan="4">No Customers Found.</td>
+            <td colspan="4">No Payments Found.</td>
         </tr>
 
         {% endfor %}
