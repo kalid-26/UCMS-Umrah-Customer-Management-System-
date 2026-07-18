@@ -1,9 +1,17 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.views.generic import (TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView)
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
-from django.db.models import Sum
+from django.contrib import messages
 
+from django.views.generic import (
+    TemplateView, 
+    ListView, 
+    DetailView, 
+    CreateView, 
+    UpdateView, 
+    DeleteView
+)
+from django.db.models import Sum, Q
 
 from .models import Customer, Package, Payment, UmrahApplication
 from .forms import CustomerForm, ApplicationForm, PaymentForm, PackageForm
@@ -56,19 +64,33 @@ class CustomerList(LoginRequiredMixin, ListView):
     model = Customer
     template_name = "umrah/customers/customer_list.html"
     context_object_name = "customers"
-    paginate_by = 10
+    paginate_by = 5
     
     def get_queryset(self):
-        return Customer.objects.filter(
+        queryset = Customer.objects.filter(
             is_active=True
         )
-
+        
+        search_query = (
+            self.request.GET.get("search", "")
+            .strip()
+        )
+        
+        if search_query:
+            queryset = queryset.filter(
+                Q(customer_id__icontains = search_query) |
+                Q(first_name__icontains=search_query) |
+                Q(last_name__icontains=search_query) |
+                Q(phone_number__icontains=search_query) |
+                Q(passport_number__icontains=search_query) 
+            )
+        
+        return queryset
 
 class CustomerDetail(LoginRequiredMixin, DetailView):
     model = Customer
     template_name = 'umrah/customers/customer_detail.html'
     context_object_name = 'customer'
-
 
 class CustomerCreateView(LoginRequiredMixin, CreateView):
     model = Customer
@@ -76,10 +98,13 @@ class CustomerCreateView(LoginRequiredMixin, CreateView):
     template_name = "umrah/customers/customer_form.html"
     
     def form_valid(self, form):
-        form.instance.created_by = (
-            self.request.user
-        )
-        return super().form_valid(form)
+        form.instance.created_by = self.request.user
+        response =  super().form_valid(form)
+
+        messages.success(self.request, "Customer created successfully.")
+        
+        return response
+    
     def get_success_url(self):
         return reverse_lazy(
             'umrah:customer-detail',
@@ -93,6 +118,12 @@ class CustomerUpdateView(LoginRequiredMixin, UpdateView):
     form_class = CustomerForm
     template_name = "umrah/customers/customer_form.html"
     
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        
+        messages.success(self.request, "Customer updated successfully.")
+
+        return response
     def get_success_url(self):
         return reverse_lazy(
             "umrah:customer-detail",
@@ -109,6 +140,9 @@ class CustomerArchiveView(LoginRequiredMixin, DeleteView):
         )
         customer.is_active = False
         customer.save()
+        
+        messages.success(request, "Customer archived successfully.")
+        
         return redirect('umrah:customer-list')
 
 
@@ -117,7 +151,6 @@ class CustomerArchiveView(LoginRequiredMixin, DeleteView):
 # ----- application CRUD operations --
 # ------------------------------------
 # ------------------------------------
-
 class ApplicationList(LoginRequiredMixin, ListView):
     model = UmrahApplication
     template_name = "umrah/applications/application_list.html"
@@ -125,10 +158,25 @@ class ApplicationList(LoginRequiredMixin, ListView):
     paginate_by = 10
 
     def get_queryset(self):
-        return UmrahApplication.objects.filter(
+        query_set =  UmrahApplication.objects.filter(
             is_active=True
         )
         
+        search_query = (
+            self.request.GET.get("search", "")
+            .strip()
+        )
+        
+        if search_query:
+            query_set = query_set.filter(
+                Q(customer__customer_id__icontains=search_query) |
+                Q(customer__first_name__icontains=search_query) |
+                Q(customer__last_name__icontains=search_query) |
+                Q(package__name__icontains=search_query) |
+                Q(status__icontains=search_query)
+            )
+        return query_set
+    
 class ApplicationDetail(LoginRequiredMixin, DetailView):
     model = UmrahApplication
     template_name = "umrah/applications/application_detail.html"
@@ -140,10 +188,12 @@ class ApplicationCreate(LoginRequiredMixin, CreateView):
     template_name = "umrah/applications/application_form.html"
     
     def form_valid(self, form):
-        form.instance.created_by = (
-            self.request.user
-        ) 
-        return super().form_valid(form)
+        form.instance.created_by = (self.request.user) 
+        response = super().form_valid(form)
+        
+        messages.success(self.request, "Application created successfully.")
+        
+        return response 
     
     def get_success_url(self):
         return reverse_lazy(
@@ -157,6 +207,12 @@ class ApplicationUpdate(LoginRequiredMixin, UpdateView):
     model = UmrahApplication
     form_class = ApplicationForm
     template_name = "umrah/applications/application_form.html"
+    
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        messages.success(self.request, "Application updated successfully.")
+        
+        return response
     
     def get_success_url(self):
         return reverse_lazy(
@@ -174,8 +230,8 @@ class ApplicationArchive(LoginRequiredMixin, DeleteView):
         )        
         application.is_active = False 
         application.save()
+        messages.success(request, "Customer Arichived successfully.")
         return redirect("umrah:application-list")
-
 
 
 # ------------------------------------
@@ -192,6 +248,7 @@ class PackageList(LoginRequiredMixin, ListView):
         return Package.objects.filter(
             is_active=True
         )
+        
 class PackageDetail(LoginRequiredMixin, DetailView):
     model = Package
     template_name = 'umrah/packages/package_detail.html'
@@ -203,10 +260,12 @@ class PackageCreate(LoginRequiredMixin, CreateView):
     template_name = 'umrah/packages/package_form.html'
     
     def form_valid(self, form):
-        form.instance.created_by = (
-            self.request.user
-        )
-        return super().form_valid(form)
+        form.instance.created_by = (self.request.user) 
+        response = super().form_valid(form)
+        
+        messages.success(self.request, "Package created successfully.")
+        
+        return response 
     def get_success_url(self):
         return reverse_lazy(
             "umrah:package-detail",
@@ -214,10 +273,17 @@ class PackageCreate(LoginRequiredMixin, CreateView):
                 "pk": self.object.pk
             }
         )
+        
 class PackageUpdate(LoginRequiredMixin, UpdateView):
     model = Package
     form_class = PackageForm
     template_name = 'umrah/packages/package_form.html'
+    
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        messages.success(self.request, "Package updated successfully.")
+        
+        return response
     
     def get_success_url(self):
         return reverse_lazy(
@@ -227,7 +293,6 @@ class PackageUpdate(LoginRequiredMixin, UpdateView):
             }
         )
         
-
 class PackageArchive(LoginRequiredMixin, DeleteView):
     def post(self, request, pk):
         package = get_object_or_404(
@@ -236,6 +301,7 @@ class PackageArchive(LoginRequiredMixin, DeleteView):
         )
         package.is_acitve = False
         package.save()
+        messages.success(request, "Package Arichived successfully.")
         return redirect("umrah:package-list")
 
 
@@ -248,12 +314,28 @@ class PaymentList(LoginRequiredMixin, ListView):
     model = Payment
     template_name = 'umrah/payments/payments_list.html'
     context_object_name = "payments"
-    paginate_by = 10
+    paginate_by = 5
     
     def get_queryset(self):
-        return Payment.objects.filter(
+        query_set = Payment.objects.filter(
             is_active=True
         )
+
+        search_query = (
+            self.request.GET.get("search", "")
+            .strip()
+        )
+        
+        if search_query:
+            query_set = query_set.filter(
+                Q(application__customer__customer_id__icontains=search_query) |
+                Q(application__customer__first_name__icontains=search_query) |
+                Q(application__customer__last_name__icontains=search_query) |
+                Q(reference_number__icontains=search_query) |
+                Q(payment_method__icontains=search_query)
+            )
+        
+        return query_set
     
 class PaymentDetail(LoginRequiredMixin, DetailView):
     model = Payment
@@ -266,10 +348,12 @@ class PaymentCreate(LoginRequiredMixin, CreateView):
     template_name = 'umrah/payments/payments_form.html'
     
     def form_valid(self, form):
-        form.instance.created_by = (
-            self.request.user
-        ) 
-        return super().form_valid(form)
+        form.instance.created_by = (self.request.user) 
+        response = super().form_valid(form)
+        
+        messages.success(self.request, "Payment created successfully.")
+        
+        return response 
     
     def get_success_url(self):
         return reverse_lazy(
@@ -284,6 +368,12 @@ class PaymentUpdate(LoginRequiredMixin, UpdateView):
     form_class = PaymentForm
     template_name =  'umrah/payments/payments_form.html'
     
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        messages.success(self.request, "Payment updated successfully.")
+        
+        return response
+    
     def get_success_url(self):
         return reverse_lazy(
             "umrah:payment-detail",
@@ -291,6 +381,7 @@ class PaymentUpdate(LoginRequiredMixin, UpdateView):
                 "pk": self.object.pk
             }
         )
+        
 class PaymentArchive(LoginRequiredMixin, DeleteView):
     def post(self, request, pk):
         payment = get_object_or_404(
@@ -299,4 +390,5 @@ class PaymentArchive(LoginRequiredMixin, DeleteView):
         )
         payment.is_active = False
         payment.save()
+        messages.success(request, "Payment Arichived successfully.")
         return redirect("umrah:payment-list")
