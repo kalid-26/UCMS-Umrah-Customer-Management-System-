@@ -1,14 +1,50 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.views.generic import (TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView)
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
+from django.db.models import Sum
+
 
 from .models import Customer, Package, Payment, UmrahApplication
 from .forms import CustomerForm, ApplicationForm, PaymentForm, PackageForm
 
 # Create your views here.
-def CustomerDashboard(request):
-    return render(request, 'umrah/dashboard.html')
+class DashboardView(LoginRequiredMixin, TemplateView):
+    template_name = 'dashboard.html'
+    
+    def get_context_data(self, **kwargs):
+        
+        context = super().get_context_data(**kwargs)
+        
+        context["total_customers"] = (
+            Customer.objects.filter(
+                is_active=True
+            ).count()
+        )
+        
+        context["total_applications"] = (
+            UmrahApplication.objects.filter(
+                is_active=True
+            ).count()
+        )
+        
+        context["total_payments"] = (
+            Payment.objects.filter(
+                is_active=True
+            ).count()
+        )
+        
+        total_revenue = Payment.objects.filter(
+            is_active=True
+        ).aggregate(
+            total=Sum("amount")
+        )
+        
+        context["total_revenue"]=(
+            total_revenue["total"] or 0
+        )
+        
+        return context
 
 # ------------------------------------
 # ------------------------------------

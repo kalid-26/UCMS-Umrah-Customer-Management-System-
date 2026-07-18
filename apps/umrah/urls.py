@@ -1,8 +1,8 @@
 from django.urls import path
 from .views import (
     
+    DashboardView, 
     CustomerList, 
-    CustomerDashboard, 
     CustomerDetail, 
     CustomerCreateView, 
     CustomerUpdateView, 
@@ -29,7 +29,7 @@ from .views import (
 app_name = 'umrah'
 
 urlpatterns = [
-    path('', CustomerDashboard, name='customer-dashboard'),  
+    path('', DashboardView.as_view(), name='dashboard'),  
     
     # customers urls 
     path('customers/', CustomerList.as_view(), name='customer-list'),  
