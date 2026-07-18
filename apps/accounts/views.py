@@ -12,7 +12,7 @@ from .forms import LoginForm
 class LoginView(FormView):
     template_name = 'accounts/login.html'
     form_class = LoginForm
-    success_url = reverse_lazy('accounts:dashboard')
+    success_url = reverse_lazy('umrah:dashboard')
     
     def form_valid(self, form):
         username = form.cleaned_data['username']
