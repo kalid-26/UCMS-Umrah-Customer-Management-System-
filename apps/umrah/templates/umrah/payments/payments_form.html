@@ -1,11 +1,11 @@
 {% extends "layouts/base_dashboard.html" %}
 {% block base_dashboard %}
 
-<h4 class="mb-5">Add Payment</h4>
+<h4 class="mb-3">Add Payment</h4>
 <form method="post">
     {% csrf_token %}
     {{form.as_p}}
-    <button type="submit" class="btn btn-sm btn-primary">Add Payment</button>
+    <button type="submit" class="btn btn-primary">Add Payment</button>
 </form>
 
 {% endblock %}

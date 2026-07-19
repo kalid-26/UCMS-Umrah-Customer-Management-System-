@@ -18,7 +18,18 @@ def validate_phone_number(value):
             "Enter a valid international phone number. Example: +251911123456"
         )
 
-class CustomerForm(forms.ModelForm):
+class BootstrapForMixin:
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        
+        for field in self.fields.values():
+            field.widget.attrs.update(
+                {
+                    "class": "form-control"
+                }
+            )
+
+class CustomerForm(BootstrapForMixin, forms.ModelForm):
     
     phone_number = forms.CharField(
         validators=[validate_phone_number]
@@ -28,6 +39,38 @@ class CustomerForm(forms.ModelForm):
         model = Customer
         fields = ["first_name", "last_name", "email", "phone_number", "passport_number", "passport_expiry_date"]
         
+        widgets = {
+            "first_name": forms.TextInput(
+                attrs={
+                    "placeholder": "Abel"
+                }
+            ),
+            "last_name": forms.TextInput(
+                attrs={
+                    "placeholder": "Meka"
+                }
+            ),
+            "email": forms.EmailInput(
+                attrs={
+                    "placeholder": "example@gmail.com"
+                }
+            ),
+            "phone_number": forms.TextInput(
+                attrs={
+                    "placeholder": "+251911121314"
+                }
+            ),
+            "passport_number": forms.TextInput(
+                attrs={
+                }
+            ),
+            "passport_expiry_date": forms.DateInput(
+                attrs={
+                    "type": "date"
+                }
+            ),
+        }
+        
     def clean_passport_expiry_date(self):
         expiry_date = self.cleaned_data.get("passport_expiry_date")
         
@@ -35,7 +78,7 @@ class CustomerForm(forms.ModelForm):
             raise ValidationError("Passport Expiry date must be a future date.")
         return expiry_date
     
-class ApplicationForm(forms.ModelForm):
+class ApplicationForm(BootstrapForMixin, forms.ModelForm):
     
     class Meta:
         model = UmrahApplication
@@ -51,7 +94,7 @@ class ApplicationForm(forms.ModelForm):
         self.fields["package"].queryset = (
             Package.objects.filter(is_active=True)
         )
-class PaymentForm(forms.ModelForm):
+class PaymentForm(BootstrapForMixin, forms.ModelForm):
     class Meta:
         model = Payment
         fields = ["application", "amount", "payment_method", "payment_date"]
@@ -84,7 +127,7 @@ class PaymentForm(forms.ModelForm):
         
         return amount
     
-class PackageForm(forms.ModelForm):
+class PackageForm(BootstrapForMixin, forms.ModelForm):
     class Meta:
         model = Package
         fields = ["name", "price", "duration_days", "description"]
