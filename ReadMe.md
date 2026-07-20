@@ -82,7 +82,8 @@ The project started as a learning project to practice building a complete Django
 * WSGI
 
 
-Project Structure
+##### Project Structure
+``` bash
 UCMS/
 │
 ├── apps/
@@ -97,7 +98,7 @@ UCMS/
 │
 ├── manage.py
 └── requirements.txt
-
+```
 
 ## Installation
 
