@@ -3,6 +3,10 @@ UCMS (Umrah Customer Management System) is a web application built to help Umrah
 
 The project started as a learning project to practice building a complete Django application from planning and database design to deployment on a live server. Instead of focusing on many advanced features, the goal of V1 was to build a solid foundation with clean CRUD operations, validation, authentication, search, pagination, and dashboard statistics.
 
+
+### Live Demo(login credential is admin(username) and 12345(password))
+[View Live Demo](https://usms.zemzemlabs.com)
+
 ### Features
 
 #### Customer Management
@@ -42,6 +46,21 @@ The project started as a learning project to practice building a complete Django
 * Secure login system
 * Custom user model
 * Login required for protected pages
+
+
+### Screenshots
+
+#### Login
+![login_page](screenshots/ulogin.png)
+
+#### Dashboard
+![dashboard_page](screenshots/udash.png)
+
+#### Customers
+![customers_page](screenshots/ucustomers.png)
+
+#### Customers Create
+![create_customers_page](screenshots/uaddcm.png)
 
 ## Technology Stack
 
@@ -123,6 +142,14 @@ Customer → Application → Package → Payment
 
 The goal of V1 is to provide a stable and usable system before introducing more advanced functionality.
 
+## Note
+
+This is the first version (V1) of the project and is intended for learning, demonstration, and portfolio purposes.
+
+A more advanced V2 with additional business features and improvements is planned.
+
+- For custom development or production-ready solutions, feel free to contact me: [Telegram](https://t.me/now_tell_us)
+
 #### Future Plans (V2)
 
 * Some ideas planned for future versions:
@@ -134,6 +161,7 @@ The goal of V1 is to provide a stable and usable system before introducing more 
 * Better role and permission management
 * Export to PDF and Excel
 * Improved dashboard insights
+* Production grading
 
 ### What I Learned
 
